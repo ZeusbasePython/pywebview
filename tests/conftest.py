@@ -1,7 +1,7 @@
-import sys, os
+import pytest
+from six.moves import reload_module
 
-# Make sure that the application source directory (this directory's parent) is
-# on sys.path.
-
-here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, here)
+@pytest.fixture(autouse=True)
+def reload_webview():
+    import webview
+    reload_module(webview)

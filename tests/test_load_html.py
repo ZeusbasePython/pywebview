@@ -1,20 +1,18 @@
+import webview
 import pytest
-import threading
-from .util import run_test, destroy_window
 
-
-def load_html():
-    import webview
-
-    def _load_html(webview):
-        webview.load_html('<h1>This is dynamically loaded HTML</h1>')
-
-    t = threading.Thread(target=_load_html, args=(webview,))
-    t.start()
-    destroy_window(webview)
-
-    webview.create_window('Load html test', 'https://www.example.org')
+from .util import run_test
 
 
 def test_load_html():
-    run_test(load_html)
+    run_test(webview, main_func, load_html, destroy_delay=0)
+
+
+def main_func():
+    webview.create_window('Load HTML test')
+
+
+def load_html():
+    webview.load_html('<h1>This is dynamically loaded HTML</h1>')
+
+

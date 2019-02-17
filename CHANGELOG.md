@@ -3,6 +3,100 @@
 
 # Changelog
 
+## 2.3
+
+_Released 12/02/2019_
+
+- `New` [All] Ability to resize window after creation `webview.set_window_size(width, height)`. Thanks @aprowe #274
+- `New` [Windows] Chrome Embedded Framework (CEF) support #15
+- `Improvement` [All] _pywebview_ does not interfer with Python's logger configuration #295
+- `Fix` [All] Empty DOM issues when window is created without a URL #285
+- `Improvement` [macOS] Web renderer upgraded to WKWebView
+- `Improvement` [macOS] Add support for Mojave dark mode
+- `Fix` [macOS] Problem with handling paths containing spaces #283
+- `Fix` [QT] Better support for QTWebKit and QTWebChannel #304
+- `Improvement` [QT] Remove support for QT4
+- `Fix` [GTK] Thrown exception not Python 2 compatible #277
+
+
+## 2.2.1
+
+_Released 24/10/2018_
+
+- `Fix` Dependency installation
+- `New` Reintroduce [qt] extra require switch
+
+## 2.2
+
+_Released 23/10/2018_
+
+- `New` Brand new documentation at https://pywebview.flowrl.com
+- `Improvement` Simplify installation. Now pywebview can be installed by `pip install pywebview`. Dependencies will be resolved and installed automatically
+- `Improvement` [GTK] Update to WebKit2
+
+## 2.1
+
+Released 16/09/2018
+
+- `New` [All] Introduce `PYWEBVIEW_GUI` environment variable and `webview.config.gui` property. Acceptable values are are `qt`, `gtk` and `win32`. `USE_QT` and `USE_WIN32` is deprecated.
+- `Fix` [Cocoa] Closing main window does not result in program termination
+- `Fix` [All] New main window re-creation after closing. #229
+- `Fix` [QT] Debug mode #233
+- `Fix` [Cocoa/Windows] Preserve JS API on page reload
+- `Fix` [Windows] `toggle_fullscreen()` function #232. Thanks @lt94
+- `Fix` [Windows] `load_css()` function. Thanks @wormius.
+
+## 2.0.3
+
+Released 16/05/2018
+
+- `Fix` [QT] Fix a deadlock preventing QT implementation from starting
+- `Fix` [QT] QT is set to default on QT-based systems
+
+
+## 2.0.1/2.0.2
+
+Released 08/05/2018
+
+- `Fix` [Winforms] Fix installation of dlls
+
+## 2.0
+
+Released 28/04/2018
+- `New` [All] Multi-window support
+- `New` [All] Ability to call Python code from Javascript via `window.pywebview.api`
+- `New` [All] Debug mode. Web inspector for Cocoa/GTK/QT and basic debug information for WinForms.
+- `New` [All] File filter support in `create_file_dialog`
+- `New` [All] `target='_blank'` links are now opened in an external browser
+- `New` [All] Change window title via a `set_title` function #159
+- `New` [All] `load_css` function
+- `New` [All] Support for relative local URLs in `create_window` / `load_html`. Linked local resources are resolved as well. #186
+- `New` [All] `todos` example app demonstrating js api and relative local URLs.
+- `New` [All] Text select in the webview window is disabled by default. Added `text_select` argument to `create_window` function.
+- `New` [QT] OpenBSD 6.x support #213. Thanks @hucste.
+- `Fix` [All] `base_uri` parameter of `load_html` defaults to the directory of the entry script
+- `Fix` [All] Consistent return types with `evaluate_js` across different platforms #175
+- `Fix` [All] Various concurrency issues and deadlocks
+- `Fix` [Winforms] Hide `Message from webpage` when using `alert` Javascript function #150
+- `Fix` [Winforms] Support for high DPI #179
+- `Fix` [QT] Support for QT 5.10 #171. Thanks @adbenitez
+- `Fix` [QT] Deprecate QT4. Starting from this verison new features won't be tested on QT4 and support will be removed in the future.
+
+
+
+## 1.8
+Released 29/10/2017
+- pywebview has the official logo
+- @shivaprsdv is now an official maintainer of the project
+- `New` [All] Add an ability to run Javascript code using `evaluate_js` function
+- `Fix` [Cocoa] Implement missing webview components (file input dialog, alert()/confirm() JS functions)
+- `Fix` [Winforms] Fix issue with non-responsive UI when a loading screen background color is used
+- `Fix` [Winforms] Add support for Del and Ctrl+A keys in input elements.
+- `New` [QT] QT5 is now prefererred over QT4
+- `Fix` [QT] Fix return parameters of `create_file_dialog` to have the same format as on other platforms
+- `Fix` [GTK] Better threading model. Thanks to @jorants #121
+
+
 ## 1.7
 Released 08/06/2017
 - `New` [All] Add a basic test suite and continuous integration. #88
@@ -57,7 +151,7 @@ Released 10/10/2016
 
 - `Fix` [All] Python 2 compatibility issue in Flask Example (#52). Thanks to @bastula.
 - `Fix` [Windows] Python 3 compatibility issue in Windows Forms implementation (#51)
-- `Fix` [Linux] Resizing width/height: 100% problem on GTK (#53). Thanks to @klausweiss. 
+- `Fix` [Linux] Resizing width/height: 100% problem on GTK (#53). Thanks to @klausweiss.
 
 
 ## 1.2.1

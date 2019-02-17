@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-(C) 2014-2016 Roman Sirokov and contributors
+(C) 2014-2018 Roman Sirokov and contributors
 Licensed under BSD license
 
 http://github.com/r0x0r/pywebview/
@@ -27,7 +27,7 @@ from webview.win32_shared import set_ie_mode
 from webview.localization import localization
 from webview import OPEN_DIALOG, FOLDER_DIALOG, SAVE_DIALOG
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('pywebview')
 
 """
 
@@ -54,9 +54,8 @@ class UIHandler(COMObject):
         # Disable context menu
         return False
 
-    def GetHostInfo(self, pDoc):
-        # Text selection is disabled by this interface by default. Let's enable it
-        pDoc.dwFlags = 0
+    def GetHostInfo(self, doc):
+        doc.contents.dwFlags |= 0x40000000
         return hresult.S_OK
 
 
@@ -82,7 +81,7 @@ class BrowserView(object):
 
         self._register_window()
         # In order for system events (most notably WM_DESTROY for application quite) propagate correctly, we need to
-        # create two windows: AtAlxWin inside MyWin. AtlAxWin hosts the MSHTML ActiveX control and MainWin receiving
+        # create two windows: AtAlxWin inside MyWin. AtlAxWin hosts the MSHTML ActiveX control and MainWin receives
         # system messages.
         self._create_main_window()
         self._create_atlax_window()
@@ -195,6 +194,12 @@ class BrowserView(object):
     def destroy(self):
         win32gui.SendMessage(self.hwnd, win32con.WM_DESTROY)
 
+    def set_window_size(self, width, height):
+        self.width = width
+        self.height = height
+        win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOP, self.pos_x, self.pos_y, width, height,
+                              win32con.SWP_SHOWWINDOW)
+
     def load_url(self, url):
         self.url = url
         self.browser.Navigate2(url)
@@ -290,39 +295,40 @@ class BrowserView(object):
             custom_doc.SetUIHandler(self.handler)
 
 
-def create_window(title, url, width, height, resizable, fullscreen, min_size,
-                  confirm_quit, background_color, webview_ready):
-    global _confirm_quit
-    _confirm_quit = confirm_quit  # not implemented
-
+def create_window(uid, title, url, width, height, resizable, fullscreen, min_size,
+                  confirm_quit, background_color, debug, js_api, frameless, webview_ready):
     set_ie_mode()
     browser_view = BrowserView(title, url, width, height, resizable, fullscreen, min_size, webview_ready)
     browser_view.show()
 
 
-def create_file_dialog(dialog_type, directory, allow_multiple, save_filename):
+def create_file_dialog(dialog_type, directory, allow_multiple, save_filename, file_types):
     return BrowserView.instance.create_file_dialog(dialog_type, directory, allow_multiple, save_filename)
 
 
-def get_current_url():
+def get_current_url(uid):
     return BrowserView.instance.get_current_url()
 
 
-def load_url(url):
+def load_url(url, uid):
     BrowserView.instance.load_url(url)
 
 
-def load_html(content, base_uri):
+def load_html(content, base_uri, uid):
     BrowserView.instance.load_html(content)
 
 
-def destroy_window():
+def destroy_window(uid):
     BrowserView.instance.destroy()
 
 
-def toggle_fullscreen():
+def toggle_fullscreen(uid):
     BrowserView.instance.toggle_fullscreen()
 
 
-def evaluate_js(script):
+def set_window_size(width, height, uid):
+    BrowserView.instance.set_window_size(width, height)
+
+
+def evaluate_js(script, uid):
     return BrowserView.instance.evaluate_js(script)

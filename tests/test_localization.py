@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-import pytest
-import threading
-from .util import run_test, destroy_window
+import webview
+from .util import run_test
+
+
+def test_localization():
+    run_test(webview, localization)
 
 
 def localization():
-    import webview
-
     strings = {
         "cocoa.menu.about": u"О программе",
         "cocoa.menu.services": u"Cлужбы",
@@ -24,9 +25,7 @@ def localization():
         "linux.saveFile": u"Сохранить файл",
     }
 
-    destroy_window(webview)
     webview.create_window('Localization test', 'https://www.example.org', strings=strings)
 
 
-def test_localization():
-    run_test(localization)
+
